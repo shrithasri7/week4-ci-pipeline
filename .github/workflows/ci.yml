@@ -13,15 +13,21 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        run: |
+          git clone https://github.com/${GITHUB_REPOSITORY}.git source
+          cd source
+          git checkout $GITHUB_SHA
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - name: Check Python Version
+        working-directory: source
+        run: python3 --version
 
       - name: Install Dependencies
-        run: pip install pytest
+        working-directory: source
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install pytest
 
       - name: Run Tests
-        run: pytest -v
+        working-directory: source
+        run: .venv/bin/python -m pytest -v
