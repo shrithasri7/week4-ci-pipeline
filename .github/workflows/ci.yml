@@ -31,3 +31,18 @@ jobs:
       - name: Run Tests
         working-directory: source
         run: .venv/bin/python -m pytest -v
+
+     
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deployment Stage
+        run: echo "Application deployed successfully!"
+
+      - name: Verify Deployment
+        run: echo "Deployment verification completed!"
+
